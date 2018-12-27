@@ -14,8 +14,13 @@ import { fetchDecks } from '../utils/api';
 import { DECKS_STORAGE_KEY } from '../utils/helpers';
 import { white, black, yellow } from '../utils/colors';
 import { AppLoading } from 'expo';
+import _ from 'lodash';
 
 class Home extends Component {
+	static navigationOptions = {
+		header: null,
+		headerMode: 'none'
+	};
 	state = {
 		ready: false
 	};
@@ -26,7 +31,7 @@ class Home extends Component {
 			.catch(e => {
 				console.log('Error: ', e);
 			})
-			.then(() => this.setState({ ready: true }));
+			.then(() => this.setState(() => ({ ready: true })));
 	}
 
 	render() {
@@ -43,7 +48,7 @@ class Home extends Component {
 			<View style={styles.container}>
 				<ScrollView contentContainerStyle={styles.scrollContainer}>
 					{numDecks > 0 ? (
-						decks.map(deck => {
+						_.map(decks, deck => {
 							let numCards = deck.questions
 								? deck.questions.length
 								: 0;
@@ -84,7 +89,8 @@ const styles = StyleSheet.create({
 	scrollContainer: {
 		paddingLeft: 20,
 		paddingTop: 0,
-		backgroundColor: white
+		backgroundColor: white,
+		flex: 1
 	},
 	deck: {
 		flexDirection: 'column',
